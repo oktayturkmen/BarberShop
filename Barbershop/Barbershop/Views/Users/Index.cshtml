@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+<h1>Kullanıcılar</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="userTableBody"></tbody>
+</table>
+
+<script>
+    async function loadUsers() {
+        const response = await fetch('/api/userapi');
+        if (!response.ok) {
+            alert('Failed to load users');
+            return;
+        }
+        
+        const users = await response.json();
+        const tableBody = document.getElementById('userTableBody');
+
+        tableBody.innerHTML = '';
+        users.forEach(user => {
+            tableBody.innerHTML += `
+                <tr id="user-${user.id}">
+                    <td>${user.id}</td>
+                    <td>${user.userName}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function deleteUser(userId) {
+        if (confirm('Are you sure?')) {
+            const response = await fetch(`/api/userapi/${userId}`, { method: 'DELETE' });
+
+            if (response.ok) {
+                document.getElementById(`user-${userId}`).remove();
+            } else {
+                alert('Failed to delete user');
+            }
+        }
+    }
+
+    // Sayfa yüklendiğinde kullanıcıları yükle
+    document.addEventListener('DOMContentLoaded', loadUsers);
+</script>
+@* // Kullanıcıları API'den yükleyen fonksiyon
+// Kullanıcıları JSON olarak al
+// Tabloyu temizle
+//        users.forEach(user => { // Her kullanıcı için tablo satırı oluştur
+    /////
+// Belirli bir kullanıcıyı API aracılığıyla silen fonksiyon *@

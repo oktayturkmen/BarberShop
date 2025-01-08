@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Hair Analysis";
+}
+
+<h2>Saç Analizi</h2>
+
+<div class="container1">
+    <form id="analyzeHairForm" method="post" enctype="multipart/form-data">
+        <label for="photo">Fotoğraf Yükle:</label>
+        <input type="file" id="photo" name="photo" class="form-control" />
+        <button type="submit" id="analyzeButton" class="btn1">Analiz Et</button>
+    </form>
+
+    <div id="result">
+        <!-- Analiz Sonuçları Burada Görünecek -->
+    </div>
+
+    <a href="@Url.Action("UserDashboard", "User")" class="btn btn-secondary">Geri Dön</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#analyzeHairForm").submit(function (e) {
+            e.preventDefault();
+
+            if (!$("#photo").val()) {
+                alert("Lütfen bir fotoğraf seçin!");
+                return;
+            }
+
+            var formData = new FormData(this);
+            $("#result").html("Lütfen bekleyin, analiz yapılıyor...");
+
+            $.ajax({
+                url: '/Hair/AnalyzeHair',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        var resultHtml = `<h3>Analiz Sonuçları</h3>`;
+                        resultHtml += `<p>Yüz Şekli: ${response.data.face_shape}</p>`;
+                        resultHtml += `<p>Önerilen Saç Modeli: ${response.data.hair_model}</p>`;
+                        resultHtml += `<img src="${response.data.output_image}" alt="Sonuç Görseli" />`;
+                        $("#result").html(resultHtml);
+                    } else {
+                        $("#result").html(`<p class='error'>Hata: ${response.message}</p>`);
+                    }
+                },
+                error: function () {
+                    $("#result").html(`<p class='error'>Bir hata oluştu. Lütfen tekrar deneyin.</p>`);
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    h2 {
+        text-align: center;
+        color: #444;
+        margin-bottom: 20px;
+    }
+
+    .container1 {
+        max-width: 500px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input[type="file"] {
+        margin-bottom: 15px;
+    }
+
+    .btn1 {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn1:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    #result {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        #result h3 {
+            color: #007bff;
+        }
+
+        #result img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+    .error {
+        color: red;
+    }
+</style>

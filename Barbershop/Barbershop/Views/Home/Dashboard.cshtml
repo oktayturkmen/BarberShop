@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5 text-center">
+    @if (!User.IsInRole("Admin"))
+    {
+        <h6 class="display-4 text-primary">Merhaba, @User.Identity.Name!</h6>
+        <p class="lead text-muted">Sistemimizde keyifli vakit geçirmenizi dileriz.</p>
+        <a asp-controller="Appointments" asp-action="Create" class="btn btn-success btn-lg shadow-sm mt-3">
+            Randevu Al
+        </a>
+    }
+    else
+    {
+        <h6 class="display-4 text-primary">Merhaba Admin, @User.Identity.Name!</h6>
+        <p class="lead text-muted">Sistem kontrol paneline hoş geldiniz.</p>
+    }
+</div>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Barbershop.Models.Barber>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Berberler</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Specialization
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* // Tablo verilerinin bulunduğu bölüm
+        // Her kuaför için bir satır oluşturuluyor *@
+      
+        @foreach (var item in Model)  // Model'deki her bir kuaför (Barber) için döngü başlatıyoruz
+        {
+            <tr>
+                
+                <td>
+                    
+                    @Html.DisplayFor(modelItem => item.BarberName)  
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Specialization)  
+                </td>
+                <td>
+                    
+                    <a asp-action="Edit" asp-route-id="@item.BarberId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BarberId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BarberId">Delete</a>  
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

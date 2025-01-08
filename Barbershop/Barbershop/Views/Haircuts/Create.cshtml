@@ -1,0 +1,56 @@
+﻿@model Barbershop.Models.Haircut
+
+@{
+    ViewData["Title"] = "Create"; // Sayfanın başlık kısmını "Create" olarak ayarlıyoruz
+}
+
+<h1>Create</h1> <!-- Sayfanın ana başlığı -->
+
+<h4>Haircut</h4> <!-- Sayfanın alt başlığı, bu sayfanın saç kesimi eklemek için olduğunu belirtiyor -->
+<hr /> <!-- Form ile başlık arasına yatay bir çizgi ekler -->
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Bootstrap ile formu 4 sütuna yerleştiriyoruz -->
+        <form asp-action="Create">
+            <!-- Form, "Create" aksiyonuna gönderilecek -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Model doğrulama hatalarını burada gösteriyoruz, hatalar kırmızı renkte olacak -->
+            <!-- Saç kesimi adı alanı -->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label> <!-- Name özelliği için etiket -->
+                <input asp-for="Name" class="form-control" /> <!-- Kullanıcının Saç Kesimi adı girmesi için input alanı -->
+                <span asp-validation-for="Name" class="text-danger"></span> <!-- Name için doğrulama hatası mesajları burada görünecek -->
+            </div>
+
+            <!-- Süre alanı -->
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label> <!-- Duration (Süre) için etiket -->
+                <input asp-for="Duration" class="form-control" /> <!-- Kullanıcının Saç Kesimi süresini girmesi için input alanı -->
+                <span asp-validation-for="Duration" class="text-danger"></span> <!-- Duration için doğrulama hatası mesajları burada görünecek -->
+            </div>
+
+            <!-- Fiyat alanı -->
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label> <!-- Price (Fiyat) için etiket -->
+                <input asp-for="Price" class="form-control" /> <!-- Kullanıcının Fiyat bilgisini girmesi için input alanı -->
+                <span asp-validation-for="Price" class="text-danger"></span> <!-- Price için doğrulama hatası mesajları burada görünecek -->
+            </div>
+
+            <!-- Formu gönder butonu -->
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" /> <!-- Saç kesimini oluşturmak için gönder butonu -->
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Geri dönmek için bağlantı -->
+<div>
+    <a asp-action="Index">Back to List</a> <!-- Kullanıcıyı saç kesimleri listesinin olduğu sayfaya yönlendirir -->
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    } <!-- Doğrulama için gerekli olan JavaScript dosyasını yükler -->
+}
